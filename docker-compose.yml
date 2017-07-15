@@ -1,18 +1,29 @@
 version: '3'
 
 services:
+  ttt-api-proxy:
+    container_name: ttt-api-proxy
+    hostname: ttt-api-proxy
+    build: docker/host/.
+    ports:
+     - "8888:80"
+    links:
+     - ttt-api-nginx
+     - ttt-front-nginx
+    volumes:
+     - ./docker/host/nginx/ttt-proxy.conf:/etc/nginx/conf.d/ttt-proxy.conf
+
   ttt-api-nginx:
     container_name: ttt-api-nginx
     hostname: ttt-api-nginx
     build: docker/host/.
     ports:
-     - "8888:80"
+     - "8800:80"
     links:
      - ttt-api-php:php-fpm
     volumes:
-     - ./ttt-api/public:/public/api:ro
-     - ./ttt-front:/public/front:ro
-     - ./docker/host/nginx:/etc/nginx/conf.d
+     - ./ttt-api:/code:ro
+     - ./docker/host/nginx/ttt-api.conf:/etc/nginx/conf.d/ttt-api.conf
 
   ttt-api-php:
     build: docker/php/.
@@ -23,11 +34,11 @@ services:
     working_dir: /code
 
   ttt-front-nginx:
-      container_name: iotjuicedb-front-nginx
-      hostname: iotjuicedb-front-nginx
-      build: docker/host/.
-      ports:
-       - "8800:80"
-      volumes:
-       - ./ttt-api/public:/public/api:ro
-       - ./docker/host/nginx:/etc/nginx/conf.d
+    build: docker/host/.
+    container_name: ttt-front-nginx
+    hostname: ttt-front-nginx
+    ports:
+     - "8080:80"
+    volumes:
+     - ./ttt-front:/usr/share/nginx/html:ro
+     - ./docker/host/nginx/ttt-front.conf:/etc/nginx/conf.d/ttt-front.conf
