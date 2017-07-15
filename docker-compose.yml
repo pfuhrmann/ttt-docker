@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  ttt-api-nginx:
+    container_name: ttt-api-nginx
+    hostname: ttt-api-nginx
+    build: docker/host/.
+    ports:
+     - "8888:80"
+    links:
+     - ttt-api-php:php-fpm
+    volumes:
+     - ./ttt-api/public:/public/api:ro
+     - ./ttt-front:/public/front:ro
+     - ./docker/host/nginx:/etc/nginx/conf.d
+
+  ttt-api-php:
+    build: docker/php/.
+    container_name: ttt-api-php
+    hostname: ttt-api-php
+    volumes:
+     - ./ttt-api:/code
+    working_dir: /code
+
+  ttt-front-nginx:
+      container_name: iotjuicedb-front-nginx
+      hostname: iotjuicedb-front-nginx
+      build: docker/host/.
+      ports:
+       - "8800:80"
+      volumes:
+       - ./ttt-api/public:/public/api:ro
+       - ./docker/host/nginx:/etc/nginx/conf.d
