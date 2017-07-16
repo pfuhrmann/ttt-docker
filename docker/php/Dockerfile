@@ -7,3 +7,4 @@ RUN if [ ! -f /usr/bin/composer ]; then curl -sS https://getcomposer.org/install
 RUN apt-get update
 RUN apt-get install -y git zip unzip curl nano net-tools
 RUN pecl install xdebug-2.5.1
+RUN docker-php-ext-enable xdebug
