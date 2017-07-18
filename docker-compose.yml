@@ -44,7 +44,6 @@ services:
                        remote_mode = req
                        remote_autostart=1
                        idekey=PHPSTORM
-                       remote_log="/tmp/logs/xdebug.log"
         PHP_IDE_CONFIG: serverName=ttt-api
 
   ttt-front-nginx:
