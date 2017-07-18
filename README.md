@@ -1,21 +1,21 @@
 # Tic-tac-toe Implementation Notes
 
-
 ## Implementation details
 - API supports NxN grids
+- Implemented 2 types of bots, clueless and unbeatable
 - Used docker-compose to create integrated environment, projects
   are however completely separate entities
 - Used latest version of the PHP (7.1.7)
 - Used ES15 for the front-end with the babel and browserify
 - PHPUnit for the functional as well as unit tests
-
+- Standards used PSR-1, PSR-2, PSR-4, PSR-7
 
 ## Requirements
 - docker 17+
 - docker-compose 1.14
 
 ### Optional requirements
-- npm - to build front-end
+- `npm` - to build front-end
 
 ## Building and Running
 ### PHP
@@ -67,8 +67,10 @@ Access project in the browser
 For additional details see README.md in the `ttt-api` and `ttt-front` folders 
 
 ## Future improvements
-- Better UI, possibly also highlight winning line
-- More robust API (validation, configurable)
+- Better UI (highlight winning line, possibility to choose AI level,
+  support for the NxN grids)
+- More robust API (validation, configurable, speed up minimax, medium
+  intensity AI level)
 - Support 2 players or switching of the bots 
 - Front-end tests are missing
 - Front-end could use some reactive framework to simplify logic drastically
