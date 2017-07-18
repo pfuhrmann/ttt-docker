@@ -1,15 +1,14 @@
 version: '3'
 
 services:
-  ttt-api-proxy:
-    container_name: ttt-api-proxy
-    hostname: ttt-api-proxy
+  ttt-proxy:
+    container_name: ttt-proxy
+    hostname: ttt-proxy
     build: docker/host/.
     ports:
      - "8888:80"
-    links:
-     - ttt-api-nginx
-     - ttt-front-nginx
+    networks:
+      main:
     volumes:
      - ./docker/host/nginx/ttt-proxy.conf:/etc/nginx/conf.d/ttt-proxy.conf
 
@@ -19,8 +18,10 @@ services:
     build: docker/host/.
     ports:
      - "8800:80"
-    links:
-     - ttt-api-php:php-fpm
+    networks:
+      main:
+        aliases:
+          - ttt-api-nginx
     volumes:
      - ./ttt-api:/code:ro
      - ./docker/host/nginx/ttt-api.conf:/etc/nginx/conf.d/ttt-api.conf
@@ -29,6 +30,10 @@ services:
     build: docker/php/.
     container_name: ttt-api-php
     hostname: ttt-api-php
+    networks:
+      main:
+        aliases:
+          - php-fpm
     volumes:
      - ./ttt-api:/code
     working_dir: /code
@@ -41,12 +46,20 @@ services:
                        idekey=PHPSTORM
                        remote_log="/tmp/logs/xdebug.log"
         PHP_IDE_CONFIG: serverName=ttt-api
+
   ttt-front-nginx:
     build: docker/host/.
     container_name: ttt-front-nginx
     hostname: ttt-front-nginx
+    networks:
+      main:
+        aliases:
+          - ttt-front-nginx
     ports:
      - "8080:80"
     volumes:
      - ./ttt-front:/usr/share/nginx/html:ro
      - ./docker/host/nginx/ttt-front.conf:/etc/nginx/conf.d/ttt-front.conf
+
+networks:
+  main:
